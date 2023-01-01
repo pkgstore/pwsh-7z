@@ -3,5 +3,5 @@
 ## Install
 
 ```powershell
-git clone 'https://github.com/shellstore/pwsh-7z.git' "$($ENV:UserProfile)\Documents\PowerShell\Modules\7z";
+git clone 'https://github.com/pkgstore/pwsh-7z.git' "$($ENV:UserProfile)\Documents\PowerShell\Modules\7z";
 ```
