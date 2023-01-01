@@ -9,6 +9,5 @@
   PowerShellVersion = '7.2'
   FunctionsToExport = @('Compress-7z', 'Expand-7z')
   CmdletsToExport = @()
-  VariablesToExport = '*'
   AliasesToExport = @()
 }
