@@ -16,7 +16,7 @@ function Compress-7z() {
     [string[]]$P_Files
   )
 
-  $7z = "$($PSScriptRoot)\7z.exe"
+  $7z = "$($PSScriptRoot)\7za.exe"
   if (Test-Path -Path "$($ENV:ProgramFiles)\7-Zip\7z.exe" -PathType "Leaf") {
     $7z = "$($ENV:ProgramFiles)\7-Zip\7z.exe"
   }
