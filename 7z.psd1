@@ -5,7 +5,7 @@
   Author = 'Kitsune Solar'
   CompanyName = 'v77 Development'
   Copyright = '(c) 2023 v77 Development. All rights reserved.'
-  # Description = ''
+  Description = 'Compress end expand 7z archive.'
   PowerShellVersion = '7.2'
   FunctionsToExport = @('Compress-7z', 'Expand-7z')
   CmdletsToExport = @()

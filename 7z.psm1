@@ -8,7 +8,7 @@ Param(
     Mandatory,
     HelpMessage="Enter file names..."
   )]
-  [Alias("")]
+  [Alias("F")]
   [string[]]$P_Files
 )
 
