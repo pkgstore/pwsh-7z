@@ -18,6 +18,10 @@ function Compress-7z() {
 
   $7z = "$($PSScriptRoot)\7z.exe"
 
+  if (-not (Test-Path -Path "$($7z)" -PathType "Leaf")) {
+    Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
+  }
+
   ForEach ($File in (Get-ChildItem $($P_Files))) {
     & "$($7z)" a "$($File.Name + '.7z')" "$($File.FullName)"
   }
@@ -42,6 +46,10 @@ function Expand-7z() {
   )
 
   $7z = "$($PSScriptRoot)\7z.exe"
+
+  if (-not (Test-Path -Path "$($7z)" -PathType "Leaf")) {
+    Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
+  }
 
   ForEach ($File in (Get-ChildItem "$($P_Files)")) {
     & "$($7z)" x "$($File.FullName)"
