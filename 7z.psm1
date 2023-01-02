@@ -10,7 +10,7 @@ function Compress-7z() {
   Param(
     [Parameter(
       Mandatory,
-      HelpMessage="Enter file names..."
+      HelpMessage="File list."
     )]
     [Alias("F")]
     [string[]]$P_Files
@@ -39,7 +39,7 @@ function Expand-7z() {
   Param(
     [Parameter(
       Mandatory,
-      HelpMessage="Enter file names..."
+      HelpMessage="File list."
     )]
     [Alias("F")]
     [string[]]$P_Files
