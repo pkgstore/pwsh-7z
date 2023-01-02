@@ -6,10 +6,10 @@ function Compress-7z() {
       -F
         File list.
       -T
-        Specifies type of archive. It can be: '7z', 'BZIP2', 'GZIP', 'TAR', 'WIM', 'XZ', 'ZIP'.
+        Specifies type of archive ('7z' | 'BZIP2' | 'GZIP' | 'TAR' | 'WIM' | 'XZ' | 'ZIP').
         Default: '7z'.
       -MX
-        Compression level (-mx1 (fastest) / ... / -mx9 (ultra)).
+        Compression level (-mx1 (fastest) | ... | -mx9 (ultra)).
         Default: 5.
       -PWD | -P
         Password. Encrypt both file data and headers.
