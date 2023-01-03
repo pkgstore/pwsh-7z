@@ -75,7 +75,7 @@ function Expand-7z() {
   }
 
   ForEach ($File in (Get-ChildItem "$($P_File)")) {
-    $CMD = @("x", "$($File.FullName)", "-o$($File.Name)", "-aoa")
+    $CMD = @("x", "$($File.FullName)")
     & "$($7z)" $CMD
   }
 }
