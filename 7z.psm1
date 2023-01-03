@@ -37,17 +37,17 @@ function Compress-7z() {
     [string]$P_PWD
   )
 
-  $7z = "$($PSScriptRoot)\7z.exe"
+  $7z = "${PSScriptRoot}\7z.exe"
 
-  if (-not (Test-Path -Path "$($7z)" -PathType "Leaf")) {
+  if (-not (Test-Path -Path "${7z}" -PathType "Leaf")) {
     Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
   }
 
-  ForEach ($File in (Get-ChildItem $($P_File))) {
-    $CMD = @("a", "-t$($P_Type)", "-mx$($P_MX)")
-    if (-not ([string]::IsNullOrEmpty($P_PWD))) { $CMD += @("-p$($P_PWD)") }
-    $CMD += @("$($File.Name + '.' + $P_Type.ToLower())", "$($File.FullName)")
-    & "$($7z)" $CMD
+  ForEach ( $File in ( Get-ChildItem ${P_File} ) ) {
+    $CMD = @( "a", "-t${P_Type}", "-mx${P_MX}" )
+    if ( -not ( [string]::IsNullOrEmpty(${P_PWD}) ) ) { $CMD += @( "-p${P_PWD}" ) }
+    $CMD += @( "$( ${File}.Name + '.' + ${P_Type}.ToLower() )", "$( ${File}.FullName )" )
+    & "${7z}" $CMD
   }
 }
 
@@ -68,14 +68,14 @@ function Expand-7z() {
     [string[]]$P_File
   )
 
-  $7z = "$($PSScriptRoot)\7z.exe"
+  $7z = "${PSScriptRoot}\7z.exe"
 
-  if (-not (Test-Path -Path "$($7z)" -PathType "Leaf")) {
+  if ( -not ( Test-Path -Path "${7z}" -PathType "Leaf" ) ) {
     Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
   }
 
-  ForEach ($File in (Get-ChildItem "$($P_File)")) {
-    $CMD = @("x", "$($File.FullName)")
-    & "$($7z)" $CMD
+  ForEach ( $File in ( Get-ChildItem "${P_File}" ) ) {
+    $CMD = @( "x", "$( ${File}.FullName )" )
+    & "${7z}" $CMD
   }
 }
