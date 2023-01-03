@@ -43,10 +43,10 @@ function Compress-7z() {
     Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
   }
 
-  if (-not ([string]::IsNullOrEmpty($P_PWD))) { $P_PWD = "-p$($P_PWD) -mhe" }
-
   ForEach ($File in (Get-ChildItem $($P_File))) {
-    & "$($7z)" -t$($P_Type) -mx$($P_MX) $($P_PWD) a "$($File.Name + '.7z')" "$($File.FullName)"
+    $CMD = @("a", "-t$($P_Type)", "-mx$($P_MX)", "$($File.Name + '.' + $P_Type)", "$($File.FullName)")
+    if (-not ([string]::IsNullOrEmpty($P_PWD))) { $CMD += "-p$($P_PWD) -mhe" }
+    & "$($7z)" $CMD
   }
 }
 
@@ -74,6 +74,7 @@ function Expand-7z() {
   }
 
   ForEach ($File in (Get-ChildItem "$($P_File)")) {
-    & "$($7z)" x "$($File.FullName)"
+    $CMD = @("x", "$($File.FullName)", "-o$($File.Name)", "-aoa")
+    & "$($7z)" $CMD
   }
 }
