@@ -44,8 +44,8 @@ function Compress-7z() {
   }
 
   ForEach ($File in (Get-ChildItem $($P_File))) {
-    $CMD = @("a", "-t$($P_Type)", "-mx$($P_MX)", "$($File.Name + '.' + $P_Type)", "$($File.FullName)")
-    if (-not ([string]::IsNullOrEmpty($P_PWD))) { $CMD += "-p$($P_PWD) -mhe" }
+    $CMD = @("a", "-t$($P_Type)", "-mx$($P_MX)", "$($File.Name + '.' + $P_Type.ToLower())", "$($File.FullName)")
+    if (-not ([string]::IsNullOrEmpty($P_PWD))) { $CMD += "-p$($P_PWD)" }
     & "$($7z)" $CMD
   }
 }
