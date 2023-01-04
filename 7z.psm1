@@ -23,25 +23,25 @@ function Compress-7z() {
 
   Param(
     [Parameter(Mandatory, HelpMessage="File list.")]
-    [Alias('Files', 'File', 'F')]
+    [Alias('File', 'F')]
     [string[]]$Files,
 
     [Parameter(HelpMessage="Specifies type of archive. Value: ['7z' | 'BZIP2' | 'GZIP' | 'TAR' | 'WIM' | 'XZ' | 'ZIP']. Default: '7z'.")]
     [ValidateSet('7z', 'BZIP2', 'GZIP', 'TAR', 'WIM', 'XZ', 'ZIP')]
-    [Alias('Type', 'T')]
+    [Alias('T')]
     [string]$Type = '7z',
 
     [Parameter(HelpMessage="Compression level. Value: [1 | ... | 9]. Default: 5.")]
     [ValidateRange(1,9)]
-    [Alias('Level', 'L')]
+    [Alias('LVL', 'L')]
     [int]$Level = 5,
 
     [Parameter(HelpMessage="Password. Encrypt both file data and headers.")]
-    [Alias('Password', 'PWD', 'P')]
+    [Alias('PWD', 'P')]
     [string]$Password,
 
     [Parameter(HelpMessage="Delete files after compression.")]
-    [Alias('Delete', 'DEL', 'D')]
+    [Alias('DEL', 'D')]
     [switch]$Delete = $false
   )
 
@@ -73,7 +73,7 @@ function Expand-7z() {
 
   Param(
     [Parameter(Mandatory, HelpMessage="File list.")]
-    [Alias('Files', 'File', 'F')]
+    [Alias('File', 'F')]
     [string[]]$Files
   )
 
