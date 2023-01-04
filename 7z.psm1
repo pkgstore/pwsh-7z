@@ -54,7 +54,6 @@ function Compress-7z() {
 
   ForEach ( ${File} in ( Get-ChildItem ${Files} ) ) {
     $FullName = "$( ${File}.FullName )"
-
     $CMD = @( "a", "-t${Type}", "-mx${Level}" )
     if ( -not ( [string]::IsNullOrEmpty(${Password}) ) ) { $CMD += @( "-p${Password}" ) }
     if ( $Delete ) { $CMD += @( "-sdel" ) }
