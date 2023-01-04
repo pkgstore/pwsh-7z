@@ -52,7 +52,7 @@ function Compress-7z() {
     Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
   }
 
-  ForEach ( $File in ( Get-ChildItem ${Files} ) ) {
+  ForEach ( ${File} in ( Get-ChildItem ${Files} ) ) {
     $CMD = @( "a", "-t${Type}", "-mx${Level}" )
     if ( -not ( [string]::IsNullOrEmpty(${Password}) ) ) { $CMD += @( "-p${Password}" ) }
     if ( $Delete ) { $CMD += @( "-sdel" ) }
@@ -74,6 +74,7 @@ function Expand-7z() {
 
   Param(
     [Parameter(Mandatory, HelpMessage="File list.")]
+    [SupportsWildcards()]
     [Alias('File', 'F')]
     [string[]]$Files
   )
@@ -84,8 +85,32 @@ function Expand-7z() {
     Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
   }
 
-  ForEach ( $File in ( Get-ChildItem "${Files}" ) ) {
+  ForEach ( ${File} in ( Get-ChildItem "${Files}" ) ) {
     $CMD = @( "x", "$( ${File}.FullName )" )
     & "${7z}" $CMD
+  }
+}
+
+function Compress-ISO() {
+  <#
+    .SYNOPSIS
+      Compress 'ISO' to archive.
+    .DESCRIPTION
+      -F
+        File list.
+  #>
+
+  [CmdletBinding()]
+
+  Param(
+    [Parameter(Mandatory, HelpMessage="File list.")]
+    [SupportsWildcards()]
+    [Alias('File', 'F')]
+    [string[]]$Files
+  )
+
+  ForEach ( ${File} in ( Get-ChildItem "${Files}" ) ) {
+    # Get-FileHash -Algorithm 'SHA1' -Path "$( ${File}.FullName )" > "$( ${File}.Name + '.sha1' )"
+    Compress-7z -F "$( ${File}.FullName )" -L 9
   }
 }
