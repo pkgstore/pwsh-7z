@@ -3,5 +3,5 @@
 ## Install
 
 ```powershell
-git clone 'https://github.com/pkgstore/pwsh-7z.git' "$($ENV:UserProfile)\Documents\PowerShell\Modules\7z";
+Invoke-WebRequest 'https://github.com/pkgstore/pwsh-7z/releases/latest/download/pwsh-7z.zip' -OutFile "$($ENV:UserProfile)\Documents\PowerShell\Modules"
 ```
