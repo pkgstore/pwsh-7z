@@ -56,7 +56,7 @@ function Compress-7z() {
     $CMD = @( "a", "-t${Type}", "-mx${Level}" )
     if ( -not ( [string]::IsNullOrEmpty(${Password}) ) ) { $CMD += @( "-p${Password}" ) }
     if ( $Delete ) { $CMD += @( "-sdel" ) }
-    $CMD += @( "$( ${File}.Name + '.' + ${Type}.ToLower() )", "$( ${File}.FullName )" )
+    $CMD += @( "$( ${File}.FullName + '.' + ${Type}.ToLower() )", "$( ${File}.FullName )" )
     & "${7z}" $CMD
   }
 }
@@ -110,7 +110,9 @@ function Compress-ISO() {
   )
 
   ForEach ( ${File} in ( Get-ChildItem "${Files}" ) ) {
-    # Get-FileHash -Algorithm 'SHA1' -Path "$( ${File}.FullName )" > "$( ${File}.Name + '.sha1' )"
-    Compress-7z -F "$( ${File}.FullName )" -L 9
+    $Hash = Get-FileHash "$( ${File}.FullName )" -Algorithm 'SHA1'
+      | Select-Object 'Hash', @{ N = 'Path'; E = { $_.Path | Resolve-Path -Relative } }
+    $Hash | Out-File "$( ${File}.FullName + '.sha1' )"
+    Compress-7z -F "$( ${File}.FullName )" -T '7z' -L 9
   }
 }
