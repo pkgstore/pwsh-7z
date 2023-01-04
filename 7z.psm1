@@ -23,6 +23,7 @@ function Compress-7z() {
 
   Param(
     [Parameter(Mandatory, HelpMessage="File list.")]
+    [SupportsWildcards()]
     [Alias('File', 'F')]
     [string[]]$Files,
 
