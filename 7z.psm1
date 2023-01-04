@@ -25,25 +25,25 @@ function Compress-7z() {
     [Parameter(Mandatory, HelpMessage="File list.")]
     [SupportsWildcards()]
     [Alias('File', 'F')]
-    [string[]]$Files,
+    [string[]]${Files},
 
     [Parameter(HelpMessage="Specifies type of archive. Value: ['7z' | 'BZIP2' | 'GZIP' | 'TAR' | 'WIM' | 'XZ' | 'ZIP']. Default: '7z'.")]
     [ValidateSet('7z', 'BZIP2', 'GZIP', 'TAR', 'WIM', 'XZ', 'ZIP')]
     [Alias('T')]
-    [string]$Type = '7z',
+    [string]${Type} = '7z',
 
     [Parameter(HelpMessage="Compression level. Value: [1 | ... | 9]. Default: 5.")]
     [ValidateRange(1,9)]
     [Alias('LVL', 'L')]
-    [int]$Level = 5,
+    [int]${Level} = 5,
 
     [Parameter(HelpMessage="Password. Encrypt both file data and headers.")]
     [Alias('PWD', 'P')]
-    [string]$Password,
+    [string]${Password},
 
     [Parameter(HelpMessage="Delete files after compression.")]
     [Alias('DEL', 'D')]
-    [switch]$Delete = $false
+    [switch]${Delete} = $false
   )
 
   $7z = "${PSScriptRoot}\7z.exe"
@@ -53,13 +53,13 @@ function Compress-7z() {
   }
 
   ForEach ( ${File} in ( Get-ChildItem ${Files} ) ) {
-    $FullName = "$( ${File}.FullName )"
-    $CMD = @( "a", "-t${Type}", "-mx${Level}" )
-    if ( -not ( [string]::IsNullOrEmpty(${Password}) ) ) { $CMD += @( "-p${Password}" ) }
-    if ( $Delete ) { $CMD += @( "-sdel" ) }
-    $CMD += @( "$( ${FullName} + '.' + ${Type}.ToLower() )", "${FullName}" )
+    ${FullName} = "$( ${File}.FullName )"
+    ${CMD} = @( "a", "-t${Type}", "-mx${Level}" )
+    if ( -not ( [string]::IsNullOrEmpty(${Password}) ) ) { ${CMD} += @( "-p${Password}" ) }
+    if ( ${Delete} ) { ${CMD} += @( "-sdel" ) }
+    ${CMD} += @( "$( ${FullName} + '.' + ${Type}.ToLower() )", "${FullName}" )
 
-    & "${7z}" $CMD
+    & "${7z}" ${CMD}
   }
 }
 
@@ -78,7 +78,7 @@ function Expand-7z() {
     [Parameter(Mandatory, HelpMessage="File list.")]
     [SupportsWildcards()]
     [Alias('File', 'F')]
-    [string[]]$Files
+    [string[]]${Files}
   )
 
   $7z = "${PSScriptRoot}\7z.exe"
@@ -88,10 +88,10 @@ function Expand-7z() {
   }
 
   ForEach ( ${File} in ( Get-ChildItem "${Files}" ) ) {
-    $FullName = "$( ${File}.FullName )"
-    $CMD = @( "x", "${FullName}" )
+    ${FullName} = "$( ${File}.FullName )"
+    ${CMD} = @( "x", "${FullName}" )
 
-    & "${7z}" $CMD
+    & "${7z}" ${CMD}
   }
 }
 
@@ -110,14 +110,14 @@ function Compress-ISO() {
     [Parameter(Mandatory, HelpMessage="File list.")]
     [SupportsWildcards()]
     [Alias('File', 'F')]
-    [string[]]$Files
+    [string[]]${Files}
   )
 
   ForEach ( ${File} in ( Get-ChildItem "${Files}" ) ) {
-    $FullName = "$( ${File}.FullName )"
-    $Hash = Get-FileHash "${FullName}" -Algorithm 'SHA1'
+    ${FullName} = "$( ${File}.FullName )"
+    ${Hash} = Get-FileHash "${FullName}" -Algorithm 'SHA1'
       | Select-Object 'Hash', @{ N = 'Path'; E = { $_.Path | Resolve-Path -Relative } }
-    $Hash | Out-File "$( ${FullName} + '.sha1' )"
+    ${Hash} | Out-File "$( ${FullName} + '.sha1' )"
 
     Compress-7z -F "${FullName}" -T '7z' -L 9
   }
