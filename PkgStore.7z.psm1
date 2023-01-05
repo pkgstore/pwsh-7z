@@ -2,19 +2,25 @@ function Compress-7z() {
   <#
     .SYNOPSIS
       Compress '7z' archive.
+
     .DESCRIPTION
+
     .PARAMETER F
       File list.
+
     .PARAMETER T
       Specifies type of archive.
       Value: ['7z' | 'BZIP2' | 'GZIP' | 'TAR' | 'WIM' | 'XZ' | 'ZIP'].
       Default: '7z'.
+
     .PARAMETER L
       Compression level.
       Value: [1 | ... | 9].
       Default: 5.
+
     .PARAMETER P
       Password. Encrypt both file data and headers.
+
     .PARAMETER D
       Delete files after compression.
   #>
@@ -63,7 +69,9 @@ function Expand-7z() {
   <#
     .SYNOPSIS
       Expand '7z' archive.
+
     .DESCRIPTION
+
     .PARAMETER F
       File list.
   #>
@@ -95,7 +103,9 @@ function Compress-ISO() {
   <#
     .SYNOPSIS
       Compress 'ISO' to archive.
+
     .DESCRIPTION
+
     .PARAMETER F
       File list.
   #>
