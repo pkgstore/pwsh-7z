@@ -5,24 +5,29 @@ function Compress-7z() {
 
     .DESCRIPTION
 
-    .PARAMETER F
+    .PARAMETER Files
       File list.
+      Alias: '-F'.
 
-    .PARAMETER T
+    .PARAMETER Type
       Specifies type of archive.
       Value: ['7z' | 'BZIP2' | 'GZIP' | 'TAR' | 'WIM' | 'XZ' | 'ZIP'].
       Default: '7z'.
+      Alias: '-T'.
 
-    .PARAMETER L
+    .PARAMETER Level
       Compression level.
       Value: [1 | ... | 9].
       Default: 5.
+      Alias: '-L'.
 
-    .PARAMETER P
+    .PARAMETER Password
       Password. Encrypt both file data and headers.
+      Alias: '-P'.
 
-    .PARAMETER D
+    .PARAMETER Delete
       Delete files after compression.
+      Alias: '-D'.
   #>
 
   [CmdletBinding()]
@@ -72,8 +77,9 @@ function Expand-7z() {
 
     .DESCRIPTION
 
-    .PARAMETER F
+    .PARAMETER Files
       File list.
+      Alias: '-F'.
   #>
 
   [CmdletBinding()]
@@ -106,8 +112,9 @@ function Compress-ISO() {
 
     .DESCRIPTION
 
-    .PARAMETER F
+    .PARAMETER Files
       File list.
+      Alias: '-F'.
   #>
 
   [CmdletBinding()]
