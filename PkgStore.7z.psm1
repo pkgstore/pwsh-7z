@@ -3,20 +3,20 @@ function Compress-7z() {
     .SYNOPSIS
       Compress '7z' archive.
     .DESCRIPTION
-      -F
-        File list.
-      -T
-        Specifies type of archive.
-        Value: ['7z' | 'BZIP2' | 'GZIP' | 'TAR' | 'WIM' | 'XZ' | 'ZIP'].
-        Default: '7z'.
-      -L
-        Compression level.
-        Value: [1 | ... | 9].
-        Default: 5.
-      -P
-        Password. Encrypt both file data and headers.
-      -D
-        Delete files after compression.
+    .PARAMETER F
+      File list.
+    .PARAMETER T
+      Specifies type of archive.
+      Value: ['7z' | 'BZIP2' | 'GZIP' | 'TAR' | 'WIM' | 'XZ' | 'ZIP'].
+      Default: '7z'.
+    .PARAMETER L
+      Compression level.
+      Value: [1 | ... | 9].
+      Default: 5.
+    .PARAMETER P
+      Password. Encrypt both file data and headers.
+    .PARAMETER D
+      Delete files after compression.
   #>
 
   [CmdletBinding()]
@@ -64,8 +64,8 @@ function Expand-7z() {
     .SYNOPSIS
       Expand '7z' archive.
     .DESCRIPTION
-      -F
-        File list.
+    .PARAMETER F
+      File list.
   #>
 
   [CmdletBinding()]
@@ -96,8 +96,8 @@ function Compress-ISO() {
     .SYNOPSIS
       Compress 'ISO' to archive.
     .DESCRIPTION
-      -F
-        File list.
+    .PARAMETER F
+      File list.
   #>
 
   [CmdletBinding()]
