@@ -52,7 +52,7 @@ function Compress-7z() {
     Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
   }
 
-  ForEach ( ${File} in ( Get-ChildItem ${Files} ) ) {
+  ForEach ( ${File} in ( Get-ChildItem "${Files}" ) ) {
     ${FullName} = "$( ${File}.FullName )"
     ${CMD} = @( "a", "-t${Type}", "-mx${Level}" )
     if ( -not ( [string]::IsNullOrEmpty(${Password}) ) ) { ${CMD} += @( "-p${Password}" ) }
