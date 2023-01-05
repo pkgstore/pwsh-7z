@@ -1,5 +1,5 @@
 @{
-  RootModule = '7z.psm1'
+  RootModule = 'PkgStore.7z.psm1'
   ModuleVersion = '1.0.0'
   GUID = '613eb0b0-1b1e-4f28-92c9-1c6e73e91a1a'
   Author = 'Kitsune Solar'
