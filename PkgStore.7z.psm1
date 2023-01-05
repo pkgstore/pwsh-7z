@@ -13,9 +13,9 @@ function Compress-7z() {
         Compression level.
         Value: [1 | ... | 9].
         Default: 5.
-      -P | -PWD
+      -P
         Password. Encrypt both file data and headers.
-      -D | -DEL
+      -D
         Delete files after compression.
   #>
 
@@ -24,7 +24,7 @@ function Compress-7z() {
   Param(
     [Parameter(Mandatory)]
     [SupportsWildcards()]
-    [Alias('File', 'F')]
+    [Alias('F')]
     [string[]]${Files},
 
     [ValidateSet('7z', 'BZIP2', 'GZIP', 'TAR', 'WIM', 'XZ', 'ZIP')]
@@ -32,13 +32,13 @@ function Compress-7z() {
     [string]${Type} = '7z',
 
     [ValidateRange(1,9)]
-    [Alias('LVL', 'L')]
+    [Alias('L')]
     [int]${Level} = 5,
 
-    [Alias('PWD', 'P')]
+    [Alias('P')]
     [string]${Password},
 
-    [Alias('DEL', 'D')]
+    [Alias('D')]
     [switch]${Delete} = $false
   )
 
@@ -48,8 +48,8 @@ function Compress-7z() {
     Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
   }
 
-  ForEach ( ${File} in ( Get-ChildItem ${Files} ) ) {
-    ${FullName} = "$( ${File}.FullName )"
+  ForEach ( ${F} in ( Get-ChildItem ${Files} ) ) {
+    ${FullName} = "$( ${F}.FullName )"
     ${CMD} = @( "a", "-t${Type}", "-mx${Level}" )
     if ( -not ( [string]::IsNullOrEmpty(${Password}) ) ) { ${CMD} += @( "-p${Password}" ) }
     if ( ${Delete} ) { ${CMD} += @( "-sdel" ) }
@@ -73,7 +73,7 @@ function Expand-7z() {
   Param(
     [Parameter(Mandatory)]
     [SupportsWildcards()]
-    [Alias('File', 'F')]
+    [Alias('F')]
     [string[]]${Files}
   )
 
@@ -83,8 +83,8 @@ function Expand-7z() {
     Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
   }
 
-  ForEach ( ${File} in ( Get-ChildItem ${Files} ) ) {
-    ${FullName} = "$( ${File}.FullName )"
+  ForEach ( ${F} in ( Get-ChildItem ${Files} ) ) {
+    ${FullName} = "$( ${F}.FullName )"
     ${CMD} = @( "x", "${FullName}" )
 
     & "${7z}" ${CMD}
@@ -105,12 +105,12 @@ function Compress-ISO() {
   Param(
     [Parameter(Mandatory)]
     [SupportsWildcards()]
-    [Alias('File', 'F')]
+    [Alias('F')]
     [string[]]${Files}
   )
 
-  ForEach ( ${File} in ( Get-ChildItem ${Files} ) ) {
-    ${FullName} = "$( ${File}.FullName )"
+  ForEach ( ${F} in ( Get-ChildItem ${Files} ) ) {
+    ${FullName} = "$( ${F}.FullName )"
     ${Hash} = Get-FileHash "${FullName}" -Algorithm 'SHA1'
       | Select-Object 'Hash', @{ N = 'Path'; E = { $_.Path | Resolve-Path -Relative } }
     ${Hash} | Out-File "$( ${FullName} + '.sha1' )"
