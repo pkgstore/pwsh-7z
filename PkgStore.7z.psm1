@@ -28,6 +28,21 @@ function Compress-7z() {
     .PARAMETER Delete
       Delete files after compression.
       Alias: '-D'.
+
+    .EXAMPLE
+      Compress-7z -F '*.iso', '*.txt'
+
+    .EXAMPLE
+      Compress-7z -F '*.log' -T 'zip'
+
+    .EXAMPLE
+      Compress-7z -F '*.txt' -L 9
+
+    .LINK
+      Package Store: https://github.com/pkgstore
+
+    .NOTES
+      Author: Kitsune Solar <mail@kitsune.solar>
   #>
 
   [CmdletBinding()]
@@ -80,6 +95,15 @@ function Expand-7z() {
     .PARAMETER Files
       File list.
       Alias: '-F'.
+
+    .EXAMPLE
+      Expand-7z -F '*.7z'
+
+    .LINK
+      Package Store: https://github.com/pkgstore
+
+    .NOTES
+      Author: Kitsune Solar <mail@kitsune.solar>
   #>
 
   [CmdletBinding()]
@@ -115,6 +139,15 @@ function Compress-ISO() {
     .PARAMETER Files
       File list.
       Alias: '-F'.
+
+    .EXAMPLE
+      Compress-7z -F '*.iso'
+
+    .LINK
+      Package Store: https://github.com/pkgstore
+
+    .NOTES
+      Author: Kitsune Solar <mail@kitsune.solar>
   #>
 
   [CmdletBinding()]
