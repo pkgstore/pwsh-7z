@@ -1,4 +1,4 @@
-# PowerShell 7z Module
+# PowerShell "7z" Module
 
 ## Install
 
