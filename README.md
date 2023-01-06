@@ -3,5 +3,5 @@
 ## Install
 
 ```powershell
-Install-PSM -Names '7z'
+Install-PSM -N '7z'
 ```
