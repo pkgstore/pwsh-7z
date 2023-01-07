@@ -68,18 +68,22 @@ function Compress-7z() {
     [switch]${Delete} = $false
   )
 
+  # 7zip executable file.
   ${APP} = "${PSScriptRoot}\App\7z.exe"
 
+  # Checking if a '7z.exe' exist.
   if ( -not ( Test-Path -Path "${APP}" -PathType "Leaf" ) ) {
     Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
   }
 
   ForEach ( ${F} in ( Get-ChildItem ${Files} ) ) {
+    # Composing a app command.
     ${CMD} = @( "a", "-t${Type}", "-mx${Level}" )
     if ( -not ( [string]::IsNullOrEmpty(${Password}) ) ) { ${CMD} += @( "-p${Password}" ) }
     if ( ${Delete} ) { ${CMD} += @( "-sdel" ) }
     ${CMD} += @( "$( ${F}.FullName + '.' + ${Type}.ToLower() )", "$( ${F}.FullName )" )
 
+    # Running a app.
     & "${APP}" ${CMD}
   }
 }
@@ -114,15 +118,19 @@ function Expand-7z() {
     [string[]]${Files}
   )
 
+  # 7zip executable file.
   ${APP} = "${PSScriptRoot}\App\7z.exe"
 
+  # Checking if a '7z.exe' exist.
   if ( -not ( Test-Path -Path "${APP}" -PathType "Leaf" ) ) {
     Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
   }
 
   ForEach ( ${F} in ( Get-ChildItem ${Files} ) ) {
+    # Composing a app command.
     ${CMD} = @( "x", "$( ${F}.FullName )" )
 
+    # Running a app.
     & "${APP}" ${CMD}
   }
 }
@@ -158,10 +166,14 @@ function Compress-ISO() {
   )
 
   ForEach ( ${F} in ( Get-ChildItem ${Files} ) ) {
+    # Hash pattern.
     ${HASH} = Get-FileHash "$( ${F}.FullName )" -Algorithm 'SHA1'
       | Select-Object 'Hash', @{ N = 'Path'; E = { $_.Path | Resolve-Path -Relative } }
+
+    # Running a hash generator for '*.ISO'.
     ${HASH} | Out-File "$( ${F}.FullName + '.sha1' )"
 
+    # Compressing a '*.ISO' file.
     Compress-7z -F "$( ${F}.FullName )" -T '7z' -L 9
   }
 }
