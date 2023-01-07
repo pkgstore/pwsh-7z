@@ -75,11 +75,10 @@ function Compress-7z() {
   }
 
   ForEach ( ${F} in ( Get-ChildItem ${Files} ) ) {
-    ${FullName} = "$( ${F}.FullName )"
     ${CMD} = @( "a", "-t${Type}", "-mx${Level}" )
     if ( -not ( [string]::IsNullOrEmpty(${Password}) ) ) { ${CMD} += @( "-p${Password}" ) }
     if ( ${Delete} ) { ${CMD} += @( "-sdel" ) }
-    ${CMD} += @( "$( ${FullName} + '.' + ${Type}.ToLower() )", "${FullName}" )
+    ${CMD} += @( "$( ${F}.FullName + '.' + ${Type}.ToLower() )", "$( ${F}.FullName )" )
 
     & "${APP}" ${CMD}
   }
@@ -115,15 +114,14 @@ function Expand-7z() {
     [string[]]${Files}
   )
 
-  ${APP} = "${PSScriptRoot}\app\7z.exe"
+  ${APP} = "${PSScriptRoot}\App\7z.exe"
 
   if ( -not ( Test-Path -Path "${APP}" -PathType "Leaf" ) ) {
     Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
   }
 
   ForEach ( ${F} in ( Get-ChildItem ${Files} ) ) {
-    ${FullName} = "$( ${F}.FullName )"
-    ${CMD} = @( "x", "${FullName}" )
+    ${CMD} = @( "x", "$( ${F}.FullName )" )
 
     & "${APP}" ${CMD}
   }
@@ -160,11 +158,10 @@ function Compress-ISO() {
   )
 
   ForEach ( ${F} in ( Get-ChildItem ${Files} ) ) {
-    ${FullName} = "$( ${F}.FullName )"
-    ${Hash} = Get-FileHash "${FullName}" -Algorithm 'SHA1'
+    ${HASH} = Get-FileHash "$( ${F}.FullName )" -Algorithm 'SHA1'
       | Select-Object 'Hash', @{ N = 'Path'; E = { $_.Path | Resolve-Path -Relative } }
-    ${Hash} | Out-File "$( ${FullName} + '.sha1' )"
+    ${HASH} | Out-File "$( ${F}.FullName + '.sha1' )"
 
-    Compress-7z -F "${FullName}" -T '7z' -L 9
+    Compress-7z -F "$( ${F}.FullName )" -T '7z' -L 9
   }
 }
