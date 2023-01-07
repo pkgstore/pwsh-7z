@@ -68,9 +68,9 @@ function Compress-7z() {
     [switch]${Delete} = $false
   )
 
-  $7z = "${PSScriptRoot}\7z.exe"
+  ${APP} = "${PSScriptRoot}\App\7z.exe"
 
-  if (-not (Test-Path -Path "${7z}" -PathType "Leaf")) {
+  if ( -not ( Test-Path -Path "${APP}" -PathType "Leaf" ) ) {
     Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
   }
 
@@ -81,7 +81,7 @@ function Compress-7z() {
     if ( ${Delete} ) { ${CMD} += @( "-sdel" ) }
     ${CMD} += @( "$( ${FullName} + '.' + ${Type}.ToLower() )", "${FullName}" )
 
-    & "${7z}" ${CMD}
+    & "${APP}" ${CMD}
   }
 }
 
@@ -115,9 +115,9 @@ function Expand-7z() {
     [string[]]${Files}
   )
 
-  $7z = "${PSScriptRoot}\7z.exe"
+  ${APP} = "${PSScriptRoot}\app\7z.exe"
 
-  if ( -not ( Test-Path -Path "${7z}" -PathType "Leaf" ) ) {
+  if ( -not ( Test-Path -Path "${APP}" -PathType "Leaf" ) ) {
     Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
   }
 
@@ -125,7 +125,7 @@ function Expand-7z() {
     ${FullName} = "$( ${F}.FullName )"
     ${CMD} = @( "x", "${FullName}" )
 
-    & "${7z}" ${CMD}
+    & "${APP}" ${CMD}
   }
 }
 
