@@ -73,7 +73,7 @@ function Compress-7z() {
 
   # Checking if a '7z.exe' exist.
   if ( -not ( Test-Path -Path "${APP}" -PathType "Leaf" ) ) {
-    Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
+    Write-Msg -T 'E' -M "'7z.exe' not found!" -A 'Stop'
   }
 
   ForEach ( ${F} in ( Get-ChildItem ${Files} ) ) {
@@ -123,7 +123,7 @@ function Expand-7z() {
 
   # Checking if a '7z.exe' exist.
   if ( -not ( Test-Path -Path "${APP}" -PathType "Leaf" ) ) {
-    Write-Error -Message "'7z.exe' not found!" -ErrorAction "Stop"
+    Write-Msg -T 'E' -M "'7z.exe' not found!" -A 'Stop'
   }
 
   ForEach ( ${F} in ( Get-ChildItem ${Files} ) ) {
