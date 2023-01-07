@@ -7,7 +7,13 @@
   Copyright = '(c) 2023 v77 Development. All rights reserved.'
   Description = 'Compress end expand 7z archive.'
   PowerShellVersion = '7.1'
+  RequiredModules = @('PkgStore.Kernel')
   FunctionsToExport = @('Compress-7z', 'Expand-7z', 'Compress-ISO')
-  CmdletsToExport = @()
-  AliasesToExport = @()
+  PrivateData = @{
+    PSData = @{
+      Tags = @('pwsh', '7z', '7zip')
+      LicenseUri = 'https://github.com/pkgstore/pwsh-7z/blob/main/LICENSE'
+      ProjectUri = 'https://github.com/pkgstore/pwsh-7z'
+    }
+  }
 }
