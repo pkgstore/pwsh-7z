@@ -167,11 +167,14 @@ function Compress-ISO() {
 
   ForEach ( ${F} in ( Get-ChildItem ${Files} ) ) {
     # Hash pattern.
-    ${HASH} = Get-FileHash "$( ${F}.FullName )" -Algorithm 'SHA1'
+    ${SHA1} = Get-FileHash "$( ${F}.FullName )" -Algorithm 'SHA1'
       | Select-Object 'Hash', @{ N = 'Path'; E = { $_.Path | Resolve-Path -Relative } }
+    ${SHA1} | Out-File "$( ${F}.FullName + '.sha1' )"
 
-    # Running a hash generator for '*.ISO'.
-    ${HASH} | Out-File "$( ${F}.FullName + '.sha1' )"
+    # Hash pattern.
+    ${SHA256} = Get-FileHash "$( ${F}.FullName )" -Algorithm 'SHA256'
+      | Select-Object 'Hash', @{ N = 'Path'; E = { $_.Path | Resolve-Path -Relative } }
+    ${SHA256} | Out-File "$( ${F}.FullName + '.sha256' )"
 
     # Compressing a '*.ISO' file.
     Compress-7z -F "$( ${F}.FullName )" -T '7z' -L 9
