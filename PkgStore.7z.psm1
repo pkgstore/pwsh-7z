@@ -10,6 +10,7 @@
 #>
 
 $7Zip = @('7za.exe', '7za.dll', '7zxa.dll')
+$NL = "$([Environment]::NewLine)"
 
 function Compress-7z() {
   <#
@@ -32,9 +33,9 @@ function Compress-7z() {
   Test-7Zip
 
   (Get-ChildItem $Files) | ForEach-Object {
-    $Params = @( "a", "-t${P_Type}", "-mx${P_Level}" )
-    if (-not ([string]::IsNullOrEmpty($P_Password))) {$Params += @("-p${P_Password}")}
-    if ($P_Delete) {$Params += @("-sdel")}
+    $Params = @("a", "-t${P_Type}", "-mx${P_Level}")
+    if (-not ([string]::IsNullOrEmpty($P_Password))) { $Params += @("-p${P_Password}") }
+    if ($P_Delete) { $Params += @("-sdel") }
     $Params += @("$($_.FullName + '.' + $Type.ToLower())", "$($_.FullName)")
 
     & "${P_App}" $Params
@@ -99,7 +100,7 @@ function Test-7Zip {
     if (-not (Test-Data -T 'F' -P "${D_App}\${_}")) {
       Write-Msg -T 'W' -A 'Stop' -M ("'$_' not found!${NL}${NL}" +
       "1. Download 7-Zip Extra from 'https://www.7-zip.org/download.html'.${NL}" +
-      "2. Extract all the contents of the archive into a directory '${PSScriptRoot}'.")
+      "2. Extract all the contents of the archive into a directory '${PSScriptRoot}'.") | Out-Null
     }
   }
 }
