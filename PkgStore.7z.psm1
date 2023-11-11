@@ -10,9 +10,7 @@
 #>
 
 $7Za = @('7za.exe', '7za.dll', '7zxa.dll')
-$7ZaExe = (
-  (Get-ChildItem -LiteralPath "${PSScriptRoot}" -Filter "$($7Za[0])" -Recurse -File) | Select-Object -First 1
-)
+$7ZaExe = ((Get-ChildItem -LiteralPath "${PSScriptRoot}" -Filter "$($7Za[0])" -Recurse -File) | Select-Object -First 1)
 $NL = "$([Environment]::NewLine)"
 
 function Compress-7z() {
