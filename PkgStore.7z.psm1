@@ -5,12 +5,13 @@
   .AUTHOREMAIL  mail@kitsune.solar
   .COMPANYNAME  iHub.TO
   .COPYRIGHT    2023 Kitsune Solar. All rights reserved.
-  .LICENSEURI   https://choosealicense.com/licenses/mit/
+  .LICENSEURI   https://github.com/pkgstore/pwsh-7z/blob/main/LICENSE
   .PROJECTURI
 #>
 
 $7Za = @('7za.exe', '7za.dll', '7zxa.dll')
-$7ZaExe = ((Get-ChildItem -LiteralPath "${PSScriptRoot}" -Filter "$($7Za[0])" -Recurse -File) | Select-Object -First 1)
+$7ZaExe = @{LiteralPath = "${PSScriptRoot}"; Filter = "$($7Za[0])"; Recurse = $true; File = $true}
+$7ZaExe = ((Get-ChildItem @7ZaExe) | Select-Object -First 1)
 $NL = "$([Environment]::NewLine)"
 
 function Compress-7z() {
@@ -21,7 +22,6 @@ function Compress-7z() {
   #>
 
   Param(
-    [Alias('A')][string]$P_App = $7ZaExe,
     [Parameter(Mandatory)][SupportsWildcards()][Alias('F')][string[]]$P_Files,
     [ValidateSet('7z', 'BZIP2', 'GZIP', 'TAR', 'WIM', 'XZ', 'ZIP')][Alias('T')][string]$P_Type = '7z',
     [ValidateRange(1,9)][Alias('L')][int]$P_Level = 5,
@@ -37,7 +37,7 @@ function Compress-7z() {
     if ($P_Delete) { $Params += @("-sdel") }
     $Params += @("$($_.FullName + '.' + $P_Type.ToLower())", "$($_.FullName)")
 
-    & "${P_App}" $Params
+    & "${7ZaExe}" $Params
   }
 }
 
@@ -49,7 +49,6 @@ function Expand-7z() {
   #>
 
   Param(
-    [Alias('A')][string]$P_App = $7ZaExe,
     [Parameter(Mandatory)][SupportsWildcards()][Alias('F')][string[]]$P_Files
   )
 
@@ -58,7 +57,7 @@ function Expand-7z() {
   (Get-ChildItem $P_Files) | ForEach-Object {
     $Params = @('x', "$($_.FullName)")
 
-    & "${P_App}" $Params
+    & "${7ZaExe}" $Params
   }
 }
 

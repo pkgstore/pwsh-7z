@@ -12,7 +12,7 @@
   PrivateData = @{
     PSData = @{
       Tags = @('pwsh', '7z', '7zip')
-      LicenseUri = 'https://choosealicense.com/licenses/mit/'
+      LicenseUri = 'https://github.com/pkgstore/pwsh-7z/blob/main/LICENSE'
       ProjectUri = 'https://github.com/pkgstore/pwsh-7z'
     }
   }
