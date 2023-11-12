@@ -6,7 +6,7 @@
   .COMPANYNAME  iHub.TO
   .COPYRIGHT    2023 Kitsune Solar. All rights reserved.
   .LICENSEURI   https://github.com/pkgstore/pwsh-7z/blob/main/LICENSE
-  .PROJECTURI
+  .PROJECTURI   https://github.com/pkgstore/pwsh-7z
 #>
 
 $App = @('7za.exe', '7za.dll', '7zxa.dll')
@@ -22,7 +22,8 @@ function Compress-7z() {
   #>
 
   Param(
-    [Parameter(Mandatory)][SupportsWildcards()][Alias('F')][string[]]$P_Files,
+    [Parameter(Mandatory)][Alias('I')][string[]]$P_In,
+    [Parameter(Mandatory)][Alias('O')][string[]]$P_Out,
     [ValidateSet('7z', 'BZIP2', 'GZIP', 'TAR', 'WIM', 'XZ', 'ZIP')][Alias('T')][string]$P_Type = '7z',
     [ValidateRange(1,9)][Alias('L')][int]$P_Level = 5,
     [Alias('P')][string]$P_Password,
@@ -31,11 +32,15 @@ function Compress-7z() {
 
   Test-App
 
-  (Get-ChildItem $P_Files) | ForEach-Object {
+  (Get-ChildItem $P_In) | ForEach-Object {
     $Param = @("a", "-t${P_Type}", "-mx${P_Level}")
     if (-not ([string]::IsNullOrEmpty($P_Password))) { $Param += @("-p${P_Password}") }
     if ($P_Delete) { $Param += @("-sdel") }
-    $Param += @("$($_.FullName + '.' + $P_Type.ToLower())", "$($_.FullName)")
+    if ($P_Out) {
+      $Param += @("${P_Out}")
+    } else {
+      $Param += @("$($_.FullName + '.' + $P_Type.ToLower())", "$($_.FullName)")
+    }
 
     & "${AppExe}" $Param
   }
@@ -49,12 +54,12 @@ function Expand-7z() {
   #>
 
   Param(
-    [Parameter(Mandatory)][SupportsWildcards()][Alias('F')][string[]]$P_Files
+    [Parameter(Mandatory)][Alias('I')][string[]]$P_In
   )
 
   Test-App
 
-  (Get-ChildItem $P_Files) | ForEach-Object {
+  (Get-ChildItem $P_In) | ForEach-Object {
     $Param = @('x', "$($_.FullName)")
 
     & "${AppExe}" $Param
@@ -69,12 +74,12 @@ function Compress-ISO() {
   #>
 
   Param(
-    [Parameter(Mandatory)][SupportsWildcards()][Alias('F')][string[]]$P_Files
+    [Parameter(Mandatory)][Alias('I')][string[]]$P_In
   )
 
   Test-App
 
-  (Get-ChildItem $P_Files) | ForEach-Object {
+  (Get-ChildItem $P_In) | ForEach-Object {
     # Hash 'SHA1' pattern.
     $SHA1 = Get-FileHash "$($_.FullName)" -Algorithm 'SHA1'
       | Select-Object 'Hash', @{N = 'Path'; E = {$_.Path | Resolve-Path -Relative}}
@@ -86,7 +91,7 @@ function Compress-ISO() {
     $SHA256 | Out-File "$($_.FullName + '.sha256')"
 
     # Compressing a '*.ISO' file.
-    Compress-7z -F "$($_.FullName)" -L 9
+    Compress-7z -I "$($_.FullName)" -L 9
   }
 }
 
