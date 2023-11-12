@@ -9,9 +9,9 @@
   .PROJECTURI
 #>
 
-$7Za = @('7za.exe', '7za.dll', '7zxa.dll')
-$7ZaExe = @{LiteralPath = "${PSScriptRoot}"; Filter = "$($7Za[0])"; Recurse = $true; File = $true}
-$7ZaExe = ((Get-ChildItem @7ZaExe) | Select-Object -First 1)
+$App = @('7za.exe', '7za.dll', '7zxa.dll')
+$AppExe = @{LiteralPath = "${PSScriptRoot}"; Filter = "$($App[0])"; Recurse = $true; File = $true}
+$AppExe = ((Get-ChildItem @AppExe) | Select-Object -First 1)
 $NL = "$([Environment]::NewLine)"
 
 function Compress-7z() {
@@ -29,15 +29,15 @@ function Compress-7z() {
     [Alias('D')][switch]$P_Delete = $false
   )
 
-  Test-7Zip
+  Test-App
 
   (Get-ChildItem $P_Files) | ForEach-Object {
-    $Params = @("a", "-t${P_Type}", "-mx${P_Level}")
-    if (-not ([string]::IsNullOrEmpty($P_Password))) { $Params += @("-p${P_Password}") }
-    if ($P_Delete) { $Params += @("-sdel") }
-    $Params += @("$($_.FullName + '.' + $P_Type.ToLower())", "$($_.FullName)")
+    $Param = @("a", "-t${P_Type}", "-mx${P_Level}")
+    if (-not ([string]::IsNullOrEmpty($P_Password))) { $Param += @("-p${P_Password}") }
+    if ($P_Delete) { $Param += @("-sdel") }
+    $Param += @("$($_.FullName + '.' + $P_Type.ToLower())", "$($_.FullName)")
 
-    & "${7ZaExe}" $Params
+    & "${AppExe}" $Param
   }
 }
 
@@ -52,12 +52,12 @@ function Expand-7z() {
     [Parameter(Mandatory)][SupportsWildcards()][Alias('F')][string[]]$P_Files
   )
 
-  Test-7Zip
+  Test-App
 
   (Get-ChildItem $P_Files) | ForEach-Object {
-    $Params = @('x', "$($_.FullName)")
+    $Param = @('x', "$($_.FullName)")
 
-    & "${7ZaExe}" $Params
+    & "${AppExe}" $Param
   }
 }
 
@@ -72,7 +72,7 @@ function Compress-ISO() {
     [Parameter(Mandatory)][SupportsWildcards()][Alias('F')][string[]]$P_Files
   )
 
-  Test-7Zip
+  Test-App
 
   (Get-ChildItem $P_Files) | ForEach-Object {
     # Hash 'SHA1' pattern.
@@ -90,15 +90,21 @@ function Compress-ISO() {
   }
 }
 
-function Test-7Zip {
+function Test-App {
+  <#
+    .SYNOPSIS
+
+    .DESCRIPTION
+  #>
+
   # Getting '7za.exe' directory.
-  $D_App = "$($7ZaExe.DirectoryName)"
+  $Dir = "$($AppExe.DirectoryName)"
 
   # Checking the location of files.
-  $7Za | ForEach-Object {
-    if (-not (Test-Data -T 'F' -P "${D_App}\${_}")) {
+  $App | ForEach-Object {
+    if (-not (Test-Data -T 'F' -P "${Dir}\${_}")) {
       Write-Msg -T 'W' -A 'Stop' -M ("'${_}' not found!${NL}${NL}" +
-      "1. Download 7-Zip Extra from 'https://www.7-zip.org/download.html'.${NL}" +
+      "1. Download '${_}' from 'https://www.7-zip.org/download.html'.${NL}" +
       "2. Extract all the contents of the archive into a directory '${PSScriptRoot}'.")
     }
   }
