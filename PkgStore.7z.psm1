@@ -22,25 +22,53 @@ function Compress-7z() {
   #>
 
   Param(
-    [Parameter(Mandatory)][Alias('I')][string[]]$P_In,
-    [Parameter(Mandatory)][Alias('O')][string[]]$P_Out,
-    [ValidateSet('7z', 'BZIP2', 'GZIP', 'TAR', 'WIM', 'XZ', 'ZIP')][Alias('T')][string]$P_Type = '7z',
-    [ValidateRange(1,9)][Alias('L')][int]$P_Level = 5,
-    [Alias('P')][string]$P_Password,
-    [Alias('D')][switch]$P_Delete = $false
+    [Parameter(Mandatory)][Alias('I')][string]$P_In,
+    [Alias('O')][string]$P_Out,
+    [ValidateSet('7z', 'zip')][Alias('T')][string]$P_Type = '7z',
+    [ValidateRange(1,9)][Alias('L')][int]$P_Level = 5
   )
 
-  Test-App
+  # Checking 7-Zip location.
+  Test-7Zip
 
-  (Get-ChildItem $P_In) | ForEach-Object {
-    $Param = @("a", "-t${P_Type}", "-mx${P_Level}")
-    if (-not ([string]::IsNullOrEmpty($P_Password))) { $Param += @("-p${P_Password}") }
-    if ($P_Delete) { $Param += @("-sdel") }
-    if ($P_Out) {
-      $Param += @("${P_Out}")
-    } else {
-      $Param += @("$($_.FullName + '.' + $P_Type.ToLower())", "$($_.FullName)")
-    }
+  $I = "$((Get-Item $P_In).FullName)"   # Input data.
+  $O = (($P_Out) ? $P_Out : $I)         # Output data.
+  $E = "$($P_Type.ToLower())"           # Output extension.
+
+  $Param = @("a")                   # Creating archive.
+  $Param += @("-t${P_Type}")        # Archive type.
+  $Param += @("-mx${P_Level}")      # Compression level.
+  $Param += @("$($O + '.' + $E)")   # Output archive.
+  $Param += @("${I}")               # Input data.
+
+  & "${AppExe}" $Param
+}
+
+function Compress-7zAuto() {
+  <#
+    .SYNOPSIS
+
+    .DESCRIPTION
+  #>
+
+  Param(
+    [Parameter(Mandatory)][Alias('I')][string[]]$P_In,
+    [ValidateSet('7z', 'zip')][Alias('T')][string]$P_Type = '7z',
+    [ValidateRange(1,9)][Alias('L')][int]$P_Level = 5
+  )
+
+  # Checking 7-Zip location.
+  Test-7Zip
+
+  (Get-Item $P_In) | ForEach-Object {
+    $I = "$($_.FullName)"         # Input data.
+    $E = "$($P_Type.ToLower())"   # Output extension.
+
+    $Param = @("a")                   # Creating archive.
+    $Param += @("-t${P_Type}")        # Archive type.
+    $Param += @("-mx${P_Level}")      # Compression level.
+    $Param += @("$($I + '.' + $E)")   # Output archive.
+    $Param += @("${I}")               # Input data.
 
     & "${AppExe}" $Param
   }
@@ -57,10 +85,13 @@ function Expand-7z() {
     [Parameter(Mandatory)][Alias('I')][string[]]$P_In
   )
 
-  Test-App
+  # Checking 7-Zip location.
+  Test-7Zip
 
-  (Get-ChildItem $P_In) | ForEach-Object {
-    $Param = @('x', "$($_.FullName)")
+  (Get-Item $P_In) | ForEach-Object {
+    $I = "$($_.FullName)"   # Input data.
+    $Param = @('x')         # Extract archive.
+    $Param += @("${I}")     # Input data.
 
     & "${AppExe}" $Param
   }
@@ -74,28 +105,30 @@ function Compress-ISO() {
   #>
 
   Param(
-    [Parameter(Mandatory)][Alias('I')][string[]]$P_In
+    [Parameter(Mandatory)][Alias('I')][string]$P_In
   )
 
-  Test-App
+  # Checking 7-Zip location.
+  Test-7Zip
 
-  (Get-ChildItem $P_In) | ForEach-Object {
+  (Get-Item $P_In) | ForEach-Object {
+    $I = "$($_.FullName)"
     # Hash 'SHA1' pattern.
-    $SHA1 = Get-FileHash "$($_.FullName)" -Algorithm 'SHA1'
+    $SHA1 = Get-FileHash "${I}" -Algorithm 'SHA1'
       | Select-Object 'Hash', @{N = 'Path'; E = {$_.Path | Resolve-Path -Relative}}
-    $SHA1 | Out-File "$($_.FullName + '.sha1')"
+    $SHA1 | Out-File "$($I + '.sha1')"
 
     # Hash 'SHA256' pattern.
-    $SHA256 = Get-FileHash "$($_.FullName)" -Algorithm 'SHA256'
+    $SHA256 = Get-FileHash "${I}" -Algorithm 'SHA256'
       | Select-Object 'Hash', @{N = 'Path'; E = {$_.Path | Resolve-Path -Relative}}
-    $SHA256 | Out-File "$($_.FullName + '.sha256')"
+    $SHA256 | Out-File "$($I + '.sha256')"
 
     # Compressing a '*.ISO' file.
-    Compress-7z -I "$($_.FullName)" -L 9
+    Compress-7z -I "${I}" -L 9
   }
 }
 
-function Test-App {
+function Test-7Zip {
   <#
     .SYNOPSIS
 
