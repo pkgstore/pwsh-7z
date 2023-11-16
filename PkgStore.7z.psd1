@@ -8,7 +8,6 @@
   Description = 'Compress end expand 7z archive.'
   PowerShellVersion = '7.2'
   RequiredModules = @('PkgStore.Kernel')
-  FunctionsToExport = @('Compress-7z', 'Expand-7z', 'Compress-ISO')
   PrivateData = @{
     PSData = @{
       Tags = @('pwsh', '7z', '7zip')
