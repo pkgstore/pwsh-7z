@@ -95,7 +95,7 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        Tags = 'pwsh','7z','7zip'
+        Tags = 'pwsh', '7z', '7zip'
 
         # A URL to the license for this module.
         LicenseUri = 'https://github.com/pkgstore/pwsh-7z/blob/main/LICENSE'

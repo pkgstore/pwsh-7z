@@ -6,10 +6,10 @@ function Expand-7z() {
   #>
 
   Param(
-    [Parameter(Mandatory)][Alias('I')][string[]]$P_In
+    [Parameter(Mandatory)][Alias('I')][string[]]$In
   )
 
-  (Get-Item $P_In) | ForEach-Object {
+  (Get-Item $In) | ForEach-Object {
     $I = "$($_.FullName)"   # Input data.
     $Param = @('x')         # Extract archive.
     $Param += @("${I}")     # Input data.

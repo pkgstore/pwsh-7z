@@ -6,10 +6,10 @@ function Start-7Zip {
   #>
 
   Param(
-    [Alias('AD')][string[]]$AppData = @('7za.exe', '7za.dll', '7zxa.dll')
+    [string[]]$AppData = @('7za.exe', '7za.dll', '7zxa.dll')
   )
 
-  $AppPath = (Split-Path -Path "${PSScriptRoot}" -Parent)
+  $AppPath = (Split-Path "${PSScriptRoot}" -Parent)
   $App = @{LiteralPath = "${AppPath}"; Filter = "$($AppData[0])"; Recurse = $true; File = $true}
   $App = ((Get-ChildItem @App) | Select-Object -First 1)
   $NL = [Environment]::NewLine
