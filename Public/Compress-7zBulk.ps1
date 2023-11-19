@@ -1,8 +1,25 @@
-function Compress-7zAuto() {
+function Compress-7zBulk() {
   <#
     .SYNOPSIS
+    Bulk data compression.
 
     .DESCRIPTION
+    Bulk data compression using 7-Zip.
+
+    .PARAMETER In
+    Bulk input data.
+
+    .PARAMETER Type
+    Compression type.
+
+    .PARAMETER Level
+    Compression level.
+
+    .EXAMPLE
+    Compress-7z -In '*.TXT'
+
+    .EXAMPLE
+    Compress-7z -In '*.TXT' -Type 'zip' -Level 3
   #>
 
   param(

@@ -1,8 +1,16 @@
 function Expand-7z() {
   <#
     .SYNOPSIS
+    Unpacking compressed files.
 
     .DESCRIPTION
+    Unpacking compressed files using 7-Zip.
+
+    .PARAMETER In
+    Input data.
+
+    .EXAMPLE
+    Expand-7z -In '*.7z'
   #>
 
   param(

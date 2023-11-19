@@ -1,9 +1,9 @@
-$ModuleManifest = (Get-ChildItem -Path $PSScriptRoot | Where-Object {$_.Extension -eq '.psd1'})
+$ModuleManifest = (Get-ChildItem -Path $PSScriptRoot | Where-Object { $_.Extension -eq '.psd1' })
 $CurrentManifest = (Test-ModuleManifest $ModuleManifest)
 
 $Aliases = @()
-$PrivateFunctions = (Get-ChildItem -Path (Join-Path $PSScriptRoot 'Private') | Where-Object {$_.Extension -eq '.ps1'})
-$PublicFunctions = (Get-ChildItem -Path (Join-Path $PSScriptRoot 'Public') | Where-Object {$_.Extension -eq '.ps1'})
+$PrivateFunctions = (Get-ChildItem -Path (Join-Path $PSScriptRoot 'Private') | Where-Object { $_.Extension -eq '.ps1' })
+$PublicFunctions = (Get-ChildItem -Path (Join-Path $PSScriptRoot 'Public') | Where-Object { $_.Extension -eq '.ps1' })
 
 (@($PrivateFunctions) + @($PublicFunctions)) | ForEach-Object {
   try {
@@ -25,10 +25,10 @@ $PublicFunctions = (Get-ChildItem -Path (Join-Path $PSScriptRoot 'Public') | Whe
   }
 }
 
-$FunctionsAdded = ($PublicFunctions | Where-Object {$_.BaseName -notin $CurrentManifest.ExportedFunctions.Keys})
-$FunctionsRemoved = ($CurrentManifest.ExportedFunctions.Keys | Where-Object {$_ -notin $PublicFunctions.BaseName})
-$AliasesAdded = ($Aliases | Where-Object {$_ -notin $CurrentManifest.ExportedAliases.Keys})
-$AliasesRemoved = ($CurrentManifest.ExportedAliases.Keys | Where-Object {$_ -notin $Aliases})
+$FunctionsAdded = ($PublicFunctions | Where-Object { $_.BaseName -notin $CurrentManifest.ExportedFunctions.Keys })
+$FunctionsRemoved = ($CurrentManifest.ExportedFunctions.Keys | Where-Object { $_ -notin $PublicFunctions.BaseName })
+$AliasesAdded = ($Aliases | Where-Object { $_ -notin $CurrentManifest.ExportedAliases.Keys })
+$AliasesRemoved = ($CurrentManifest.ExportedAliases.Keys | Where-Object { $_ -notin $Aliases })
 
 if ($FunctionsAdded -or $FunctionsRemoved -or $AliasesAdded -or $AliasesRemoved) {
   try {

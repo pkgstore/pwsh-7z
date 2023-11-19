@@ -1,8 +1,31 @@
 function Compress-7z() {
   <#
     .SYNOPSIS
+    Data compression.
 
     .DESCRIPTION
+    Data compression using 7-Zip.
+
+    .PARAMETER In
+    Input data.
+
+    .PARAMETER Out
+    Output data.
+
+    .PARAMETER Type
+    Compression type.
+
+    .PARAMETER Level
+    Compression level.
+
+    .EXAMPLE
+    Compress-7z -In 'File.TXT'
+
+    .EXAMPLE
+    Compress-7z -In 'File.TXT' -Out 'D:\Docs\File'
+
+    .EXAMPLE
+    Compress-7z -In 'File.TXT' -Out 'D:\Docs\File' -Type 'zip' -Level 3
   #>
 
   param(

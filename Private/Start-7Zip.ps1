@@ -1,8 +1,10 @@
 function Start-7Zip {
   <#
     .SYNOPSIS
+    Running 7-Zip.
 
     .DESCRIPTION
+    Checking the location of the program files and launching the program.
   #>
 
   param(

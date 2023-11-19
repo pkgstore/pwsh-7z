@@ -1,12 +1,21 @@
 function Compress-ISO() {
   <#
     .SYNOPSIS
+    Compressing ISO Images.
 
     .DESCRIPTION
+    Compressing ISO images using 7-Zip.
+    Calculate the hash sum of the image and compress the image with compression level 9.
+
+    .PARAMETER In
+    Input data.
+
+    .EXAMPLE
+    Compress-ISO -In '*.ISO'
   #>
 
   param(
-    [Parameter(Mandatory)][Alias('I')][string]$In
+    [Parameter(Mandatory)][Alias('I')][string[]]$In
   )
 
   (Get-Item $In) | ForEach-Object {
