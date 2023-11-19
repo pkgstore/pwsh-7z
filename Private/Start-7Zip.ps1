@@ -5,7 +5,7 @@ function Start-7Zip {
     .DESCRIPTION
   #>
 
-  Param(
+  param(
     [string[]]$AppData = @('7za.exe', '7za.dll', '7zxa.dll')
   )
 

@@ -5,7 +5,7 @@ function Expand-7z() {
     .DESCRIPTION
   #>
 
-  Param(
+  param(
     [Parameter(Mandatory)][Alias('I')][string[]]$In
   )
 

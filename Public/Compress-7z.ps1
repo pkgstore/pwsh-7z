@@ -5,7 +5,7 @@ function Compress-7z() {
     .DESCRIPTION
   #>
 
-  Param(
+  param(
     [Parameter(Mandatory)][Alias('I')][string]$In,
     [Alias('O')][string]$Out,
     [ValidateSet('7z', 'zip')][Alias('T')][string]$Type = '7z',

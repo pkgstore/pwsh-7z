@@ -5,7 +5,7 @@ function Compress-7zAuto() {
     .DESCRIPTION
   #>
 
-  Param(
+  param(
     [Parameter(Mandatory)][Alias('I')][string[]]$In,
     [ValidateSet('7z', 'zip')][Alias('T')][string]$Type = '7z',
     [ValidateRange(1,9)][Alias('L')][int]$Level = 5

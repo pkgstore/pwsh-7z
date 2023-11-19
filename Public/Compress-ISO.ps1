@@ -5,7 +5,7 @@ function Compress-ISO() {
     .DESCRIPTION
   #>
 
-  Param(
+  param(
     [Parameter(Mandatory)][Alias('I')][string]$In
   )
 
