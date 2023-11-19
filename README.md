@@ -5,7 +5,7 @@ PowerShell module for working with 7-ZIP.
 ## Install
 
 ```powershell
-Install-CustomModule -Name '7z' -GitHubPath 'pkgstore/pwsh-7z'
+Install-CustomModule -N '7z' -GHP 'pkgstore/pwsh-7z'
 ```
 
 ## Syntax
