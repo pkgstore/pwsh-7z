@@ -2,7 +2,8 @@
 
 - Feedback, wishes and suggestions can be sent by email.
 - Constructive criticism, bug descriptions and other reports are welcome.
-- Email: [mail@ihub.to](mailto:mail@ihub.to).
+- Email: [mail@kai.kim](mailto:mail@kai.kim).
+- Telegram: [Kai Kimera](https://t.me/KaiKimera).
 
 ## Sources
 
